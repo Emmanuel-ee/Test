@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./src/style.css" />
+    <title>DVSA Address Lookup</title>
+  </head>
+  <body>
+    <div class="content">
+      <h1>Address Lookup</h1>
+      <div class="search-container">
+        <label for="searchType">Search Type:</label>
+        <select id="searchType">
+          <option value="postcode">Postcode</option>
+          <option value="query">query</option>
+        </select>
+        <input
+          type="text"
+          id="searchInput"
+          placeholder="Enter postcode or query"
+        />
+        <button id="lookupButton">Lookup</button>
+      </div>
+      <div id="results"></div>
+    </div>
+
+    <script type="module" src="./src/main.ts"></script>
+  </body>
+</html>

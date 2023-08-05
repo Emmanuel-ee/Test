@@ -1,0 +1,27 @@
+name: Test CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        node-version: [18.x, 16.x]
+    runs-on: windows-latest
+
+    env: 
+     VITE_BASE_URL: "https://api.os.uk/search/places/v1/"
+     VITE_API_KEY: "Kow8cDq81mli3bbnpMZGmFWqYgAsxkZ7"
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js version ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: npm install
+      - run: npm run test
