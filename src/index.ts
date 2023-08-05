@@ -18,6 +18,7 @@ export interface DisplayResult {
   UPRN: string;
   POST_TOWN: string;
   POSTCODE: string;
+  COUNTRY_CODE: string; //to filter Country
   COUNTRY: string;
   LAST_UPDATE_DATE: string;
   ENTRY_DATE: string;
@@ -90,7 +91,8 @@ export function fetchAddressInfo(data: Data): DisplayResult[] {
       UPRN: info.DPA.UPRN,
       POST_TOWN: info.DPA.POST_TOWN,
       POSTCODE: info.DPA.POSTCODE,
-      COUNTRY: "England",
+      COUNTRY_CODE: info.DPA.COUNTRY_CODE,
+      COUNTRY: getCountry(info.DPA.COUNTRY_CODE),
       LAST_UPDATE_DATE: editDate(info.DPA.LAST_UPDATE_DATE),
       ENTRY_DATE: editDate(info.DPA.ENTRY_DATE),
       DIFFERENCE_BETWEEN_LASTUPDATE_AND_ENTRYDATE:
@@ -100,6 +102,29 @@ export function fetchAddressInfo(data: Data): DisplayResult[] {
         ),
       MATCH: decimalToPercentage(info.DPA.MATCH as string),
     };
+    function getCountry(COUNTRY_CODE: string) {
+      if (COUNTRY_CODE.trim() === "E") {
+        const country = "England";
+        return country;
+      } else if (COUNTRY_CODE.trim() === "W") {
+        const country = "Wales";
+        return country;
+      } else if (COUNTRY_CODE.trim() === "S") {
+        const country = "Scotland";
+        return country;
+      } else if (COUNTRY_CODE.trim() === "N") {
+        const country = "Northern Ireland";
+        return country;
+      } else if (COUNTRY_CODE.trim() === "L") {
+        const country = "Channel Islands";
+        return country;
+      } else if (COUNTRY_CODE.trim() === "M") {
+        const country = "Isle of Man";
+        return country;
+      } else {
+        return "This record is not assigned to a country as it falls outside of the land boundaries used";
+      }
+    }
     infoList.push(addressDetails);
   });
   return infoList;

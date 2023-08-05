@@ -43,7 +43,7 @@ function displayResults(addresses: myFunctions.DisplayResult[]) {
                 <p><strong>UPRN:</strong> ${address.UPRN}</p>
                 <p><strong>Post Town:</strong> ${address.POST_TOWN}</p>
                 <p><strong>Postcode:</strong> ${address.POSTCODE}</p>
-                <p><strong>Country:</strong> ${address.COUNTRY}</p>
+                <p><strong>Country Code:</strong> ${address.COUNTRY_CODE}</p>
                 <p><strong>Last Update Date:</strong> ${address.LAST_UPDATE_DATE}</p>
                 <p><strong>Entry Date:</strong> ${address.ENTRY_DATE}</p>
                 <p><strong>Days Difference:</strong> ${address.DIFFERENCE_BETWEEN_LASTUPDATE_AND_ENTRYDATE}</p>
