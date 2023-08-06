@@ -61,8 +61,6 @@ export async function getAddressByPostCode(
   }
 }
 
-console.log(getAddressByPostCode("CV2 5NB"))
-
 export async function getAddressByQuery(
   query: string
 ): Promise<DisplayResult[]> {
