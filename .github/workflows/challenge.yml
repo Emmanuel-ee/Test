@@ -10,7 +10,7 @@ jobs:
   build:
     strategy:
       matrix:
-        node-version: [18.x, 16.x]
+        node-version: [18.x]
     runs-on: windows-latest
 
     env: 
