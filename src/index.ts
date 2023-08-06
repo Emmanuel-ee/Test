@@ -61,8 +61,7 @@ export async function getAddressByPostCode(
   }
 }
 
-//test
-console.log(getAddressByPostCode("CV2 5NB"));
+console.log(getAddressByPostCode("CV2 5NB"))
 
 export async function getAddressByQuery(
   query: string
