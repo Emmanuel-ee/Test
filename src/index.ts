@@ -10,8 +10,8 @@ interface ImportMeta {
   readonly env: ImportMetaEnv;
 }
 
-const API_Key: ImportMeta = import.meta.env.VITE_API_KEY;
-const BASE_URL: ImportMeta = import.meta.env.VITE_BASE_URL;
+export const API_Key: ImportMeta = import.meta.env.VITE_API_KEY;
+export const BASE_URL: ImportMeta = import.meta.env.VITE_BASE_URL;
 
 export interface DisplayResult {
   ADDRESS: string;
@@ -19,10 +19,10 @@ export interface DisplayResult {
   POST_TOWN: string;
   POSTCODE: string;
   COUNTRY_CODE: string; //to filter Country
-  COUNTRY: string;
+  COUNTRY?: string;
   LAST_UPDATE_DATE: string;
   ENTRY_DATE: string;
-  DIFFERENCE_BETWEEN_LASTUPDATE_AND_ENTRYDATE: number;
+  DIFFERENCE_BETWEEN_LASTUPDATE_AND_ENTRYDATE?: number;
   MATCH?: string;
 }
 
@@ -46,6 +46,7 @@ export async function getAddressByPostCode(
       throw new Error(`Failed to fetch data. Status: ${response.status}`);
     }
     const data: Data = await response.json();
+
     const infoWithMatch = fetchAddressInfo(data);
 
     // Remove the MATCH property from each item
@@ -59,6 +60,9 @@ export async function getAddressByPostCode(
     throw error;
   }
 }
+
+//test
+console.log(getAddressByPostCode("CV2 5NB"));
 
 export async function getAddressByQuery(
   query: string
@@ -102,32 +106,33 @@ export function fetchAddressInfo(data: Data): DisplayResult[] {
         ),
       MATCH: decimalToPercentage(info.DPA.MATCH as string),
     };
-    function getCountry(COUNTRY_CODE: string) {
-      if (COUNTRY_CODE.trim() === "E") {
-        const country = "England";
-        return country;
-      } else if (COUNTRY_CODE.trim() === "W") {
-        const country = "Wales";
-        return country;
-      } else if (COUNTRY_CODE.trim() === "S") {
-        const country = "Scotland";
-        return country;
-      } else if (COUNTRY_CODE.trim() === "N") {
-        const country = "Northern Ireland";
-        return country;
-      } else if (COUNTRY_CODE.trim() === "L") {
-        const country = "Channel Islands";
-        return country;
-      } else if (COUNTRY_CODE.trim() === "M") {
-        const country = "Isle of Man";
-        return country;
-      } else {
-        return "This record is not assigned to a country as it falls outside of the land boundaries used";
-      }
-    }
     infoList.push(addressDetails);
   });
   return infoList;
+}
+
+export function getCountry(COUNTRY_CODE: string) {
+  if (COUNTRY_CODE.trim() === "E") {
+    const country = "England";
+    return country;
+  } else if (COUNTRY_CODE.trim() === "W") {
+    const country = "Wales";
+    return country;
+  } else if (COUNTRY_CODE.trim() === "S") {
+    const country = "Scotland";
+    return country;
+  } else if (COUNTRY_CODE.trim() === "N") {
+    const country = "Northern Ireland";
+    return country;
+  } else if (COUNTRY_CODE.trim() === "L") {
+    const country = "Channel Islands";
+    return country;
+  } else if (COUNTRY_CODE.trim() === "M") {
+    const country = "Isle of Man";
+    return country;
+  } else {
+    return "This record is not assigned to a country as it falls outside of the land boundaries used";
+  }
 }
 
 export function formatAddress(

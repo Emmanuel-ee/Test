@@ -4,6 +4,10 @@ import {
   editDate,
   getDaysDifferenceBetweenDates,
   formatAddress,
+  fetchAddressInfo,
+  getCountry,
+  Data,
+  DisplayResult,
 } from "./index";
 
 describe("decimalToPercentage should convert decimal to percentage", () => {
@@ -40,4 +44,74 @@ it("should remove the postcode and posttown from an address and present address 
   expect(formatAddress(address, postCode, posttown)).toBe(
     "129, Momus Boulevard"
   );
+});
+
+it("should return the country from the country code", () => {
+  const countryCode = "W";
+  expect(getCountry(countryCode)).toBe("Wales");
+});
+
+describe("fetchAddressInfo", () => {
+  it("should process data correctly", () => {
+    const data: Data = {
+      header: {},
+      results: [
+        {
+          DPA: {
+            ADDRESS:
+              "COPSEWOOD MEDICAL CENTRE, 95, MOMUS BOULEVARD, COVENTRY, CV2 5NB",
+            COUNTRY_CODE: "E",
+            ENTRY_DATE: "25/04/2002",
+            LAST_UPDATE_DATE: "13/06/2022",
+            MATCH: "1",
+            POSTCODE: "CV2 5NB",
+            POST_TOWN: "COVENTRY",
+            UPRN: "100071366645",
+          },
+        },
+        {
+          DPA: {
+            ADDRESS: "97, MOMUS BOULEVARD, COVENTRY, CV2 5NB",
+            COUNTRY_CODE: "E",
+            ENTRY_DATE: "25/04/2002",
+            LAST_UPDATE_DATE: "13/06/2022",
+            MATCH: "1",
+            POSTCODE: "CV2 5NB",
+            POST_TOWN: "COVENTRY",
+            UPRN: "100070680186",
+          },
+        },
+      ],
+    };
+
+    const expected: DisplayResult[] = [
+      {
+        ADDRESS: "Copsewood Medical Centre, 95, Momus Boulevard",
+        COUNTRY: "England",
+        COUNTRY_CODE: "E",
+        DIFFERENCE_BETWEEN_LASTUPDATE_AND_ENTRYDATE: 7355,
+        ENTRY_DATE: "2002-04-25",
+        LAST_UPDATE_DATE: "2022-06-13",
+        MATCH: "100.00%",
+        POSTCODE: "CV2 5NB",
+        POST_TOWN: "COVENTRY",
+        UPRN: "100071366645",
+      },
+      {
+        ADDRESS: "97, Momus Boulevard",
+        COUNTRY: "England",
+        COUNTRY_CODE: "E",
+        DIFFERENCE_BETWEEN_LASTUPDATE_AND_ENTRYDATE: 7355,
+        ENTRY_DATE: "2002-04-25",
+        LAST_UPDATE_DATE: "2022-06-13",
+        MATCH: "100.00%",
+        POSTCODE: "CV2 5NB",
+        POST_TOWN: "COVENTRY",
+        UPRN: "100070680186",
+      },
+    ];
+
+    const result = fetchAddressInfo(data);
+    expect(result).toEqual(expected);
+  });
 });
